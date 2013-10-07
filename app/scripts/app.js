@@ -5,6 +5,9 @@
     $routeProvider.when('/', {
       templateUrl: 'views/main.html',
       controller: 'MainCtrl'
+    }).when('/display', {
+      templateUrl: 'views/display.html',
+      controller: 'DisplayCtrl'
     }).otherwise({
       redirectTo: '/'
     });
