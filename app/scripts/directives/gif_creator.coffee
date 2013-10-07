@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('videoCaptureApp')
-  .directive 'gifCreator', ($timeout, $http) ->
+  .directive 'gifCreator', ($timeout) ->
 
     SPACE_BAR_KEY_CODE = 32
 
@@ -19,6 +19,7 @@ angular.module('videoCaptureApp')
     restrict: 'E'
     scope: {
       gifs: '='
+      callback: '&'
     }
 
     link: (scope, element, attrs) ->
@@ -28,6 +29,7 @@ angular.module('videoCaptureApp')
       duration = attrs.duration || 5000
       recording = false
       scope.gifs = scope.gifs || []
+      scope.stitching = false
 
       if hasUserMedia()
         navigator.webkitGetUserMedia {video: true}, (localMediaStream) ->
@@ -83,9 +85,11 @@ angular.module('videoCaptureApp')
                 scope.$apply ->
                   scope.gifs.unshift url
                   scope.gifs = scope.gifs
-                # here we would post the url to a server for storage
+                  # provide the url to the callback
+                  scope.callback {url: url} if scope.callback
             gif.on 'progress', (progress) ->
-              console.log progress
+              scope.$apply ->
+                scope.stitching = if progress is 1 then false else true
               # dislay a progress bar while video is being stitched together
             gif.render()
             window.URL.revokeObjectURL video.src # free up object url

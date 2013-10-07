@@ -1,6 +1,9 @@
 <div>
   <div class="countdown-time-container">
     <p ng-bind="countdownTime"></p>
+    <div ng-show="stitching">
+      <img class="stitching" ng-src="../images/loader.png" />
+    </div>
   </div>
   <video id="record-me"></video>
   <canvas id="output-canvas"></canvas>

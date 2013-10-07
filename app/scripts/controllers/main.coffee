@@ -1,6 +1,18 @@
 'use strict'
 
 angular.module('videoCaptureApp')
-  .controller 'MainCtrl', ($scope) ->
+  .controller 'MainCtrl', ($scope, $http) ->
 
-    $scope.animatedGifs = ['/Users/louissivillo/Desktop/gif-3.gif']
+    postToAWS = (base64Gif) ->
+      console.log base64Gif
+
+    postToNode = (base64Gif) ->
+      console.log base64Gif
+
+    $scope.animatedGifs = []
+
+    $scope.startPosting = (base64Gif) ->
+      postToAWS base64Gif
+      postToNode base64Gif
+
+
