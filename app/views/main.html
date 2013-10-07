@@ -1,1 +1,11 @@
-<gif-creator frame-rate="200" duration="5000"></gif-creator>
+<div>
+  <div class="col">
+    <gif-creator gifs="animatedGifs" frame-rate="200" duration="5000"></gif-creator>
+  </div
+  ><div class="col gif-container">
+    <span>&nbsp;</span>
+    <div ng-repeat="gif in animatedGifs">
+      <img class="animated-gif" ng-src="{{gif}}">
+    </div>
+  </div>
+</div>

@@ -6,3 +6,7 @@ app/components
 
 *.css
 
+*.js
+!/*.js
+!/app/vendor/*.js
+

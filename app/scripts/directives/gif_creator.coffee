@@ -2,28 +2,32 @@
 
 angular.module('videoCaptureApp')
   .directive 'gifCreator', ($timeout, $http) ->
+
+    SPACE_BAR_KEY_CODE = 32
+
+    hasUserMedia = ->
+      !!(navigator.getUserMedia || navigator.webkitGetUserMedia ||
+      navigator.mozGetUserMedia || navigator.msGetUserMedia)
+
+    getDataURL = (blob, callback) ->
+      reader = new FileReader()
+      reader.readAsDataURL blob
+      reader.onload = (event) ->
+        callback event.target.result
+
     templateUrl: 'views/gif_creator.html'
     restrict: 'E'
+    scope: {
+      gifs: '='
+    }
 
     link: (scope, element, attrs) ->
-
-      SPACE_BAR_KEY_CODE = 32
-
-      hasUserMedia = ->
-        !!(navigator.getUserMedia || navigator.webkitGetUserMedia ||
-            navigator.mozGetUserMedia || navigator.msGetUserMedia)
-
-      getDataURL = (blob, callback) ->
-        reader = new FileReader()
-        reader.readAsDataURL blob
-        reader.onload = (event) ->
-          callback event.target.result
 
       video = null
       frameRate = attrs.frameRate || 200
       duration = attrs.duration || 5000
       recording = false
-      scope.gifs = []
+      scope.gifs = scope.gifs || []
 
       if hasUserMedia()
         navigator.webkitGetUserMedia {video: true}, (localMediaStream) ->
@@ -84,6 +88,6 @@ angular.module('videoCaptureApp')
               console.log progress
               # dislay a progress bar while video is being stitched together
             gif.render()
-            window.URL.revokeObjectURL video.src # free up the camera
+            window.URL.revokeObjectURL video.src # free up object url
             recording = false
           , duration
