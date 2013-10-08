@@ -6,5 +6,8 @@ angular.module('videoCaptureApp')
     $scope.gifs = []
 
     Realtime.listenOnFor Realtime.GIFS_NAMESPACE, 'created', (data) ->
+     $scope.$apply ->
       console.log data
+      $scope.gifs.unshift data.gif if data?.gif?
+      $scope.gifs = $scope.gifs
 
