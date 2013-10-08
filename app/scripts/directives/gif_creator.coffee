@@ -6,8 +6,10 @@ angular.module('videoCaptureApp')
     SPACE_BAR_KEY_CODE = 32
 
     hasUserMedia = ->
-      !!(navigator.getUserMedia || navigator.webkitGetUserMedia ||
-      navigator.mozGetUserMedia || navigator.msGetUserMedia)
+      invalid = [null, undefined, '']
+      navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia
+      window.URL = window.URL || window.webkitURL || window.mozURL || window.msURL
+      navigator.getUserMedia not in invalid  and window.URL not in invalid
 
     getDataURL = (blob, callback) ->
       reader = new FileReader()
@@ -32,7 +34,7 @@ angular.module('videoCaptureApp')
       scope.stitching = false
 
       if hasUserMedia()
-        navigator.webkitGetUserMedia {video: true}, (localMediaStream) ->
+        navigator.getUserMedia {video: true}, (localMediaStream) ->
           video = document.getElementById 'record-me'
           video.src = window.URL.createObjectURL localMediaStream
         , (error) -> console.log error
