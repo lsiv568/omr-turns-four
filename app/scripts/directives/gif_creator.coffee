@@ -37,6 +37,7 @@ angular.module('videoCaptureApp')
         navigator.getUserMedia {video: true}, (localMediaStream) ->
           video = document.getElementById 'record-me'
           video.src = window.URL.createObjectURL localMediaStream
+          video.play()
         , (error) ->
           console.log error
       else
@@ -66,8 +67,6 @@ angular.module('videoCaptureApp')
           ctx = canvas.getContext '2d'
           gif = new GIF {workers: 2, quality: 10, width: gifWidth, height: gifHeight, repeat: 0}
 
-          video.play()
-
           aspectRatio = video.videoWidth/video.videoHeight
           wide = (aspectRatio) * canvas.height
           offset = canvas.width * (aspectRatio-1) / 2
@@ -94,7 +93,11 @@ angular.module('videoCaptureApp')
                   scope.callback {url: url} if scope.callback
             gif.on 'progress', (progress) ->
               scope.$apply ->
-                scope.stitching = if progress is 1 then false else true
+                if progress is 1
+                  scope.stitching = false
+                  video.play() # keep the video rolling after stitching is complete
+                else
+                  scope.stitching = true
               # dislay a progress bar while video is being stitched together
             gif.render()
             window.URL.revokeObjectURL video.src # free up object url
