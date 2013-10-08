@@ -3,8 +3,6 @@
 angular.module('videoCaptureApp')
   .directive 'gifCreator', ($timeout) ->
 
-    SPACE_BAR_KEY_CODE = 32
-
     hasUserMedia = ->
       invalid = [null, undefined, '']
       navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia
@@ -29,6 +27,8 @@ angular.module('videoCaptureApp')
       video = null
       frameRate = attrs.frameRate || 200
       duration = attrs.duration || 5000
+      gifWidth = attrs.gifWidth || 200
+      gifHeight = attrs.gifHeight || 200
       recording = false
       scope.gifs = scope.gifs || []
       scope.stitching = false
@@ -37,16 +37,16 @@ angular.module('videoCaptureApp')
         navigator.getUserMedia {video: true}, (localMediaStream) ->
           video = document.getElementById 'record-me'
           video.src = window.URL.createObjectURL localMediaStream
-        , (error) -> console.log error
+        , (error) ->
+          console.log error
       else
-        alert 'You are using a terrible browser'
+        alert 'You are using a terrible browser.  Unable to use Gif Creator'
 
-      window.addEventListener 'keyup', (event) ->
-        if event.keyCode is SPACE_BAR_KEY_CODE and not recording
+      scope.startRecording = (event) ->
+        if not recording
           event.preventDefault()
           recording = true
-          scope.$apply ->
-            scope.countdownTime = 3
+          scope.countdownTime = 3
           intervalID = setInterval ->
             if scope.countdownTime is 1
               clearInterval intervalID
@@ -61,16 +61,19 @@ angular.module('videoCaptureApp')
           scope.$apply ->
             scope.countdownTime = null
           canvas = document.getElementById 'output-canvas'
-          canvas.width = 200
-          canvas.height = 200
+          canvas.width = gifWidth
+          canvas.height = gifHeight
           ctx = canvas.getContext '2d'
-          gif = new GIF {workers: 2, quality: 10, width: 200, height: 200, repeat: 0}
+          gif = new GIF {workers: 2, quality: 10, width: gifWidth, height: gifHeight, repeat: 0}
 
           video.play()
 
+          aspectRatio = video.videoWidth/video.videoHeight
+          wide = (aspectRatio) * canvas.height
+          offset = canvas.width * (aspectRatio-1) / 2
           frames = []
           intervalID = setInterval ->
-            ctx.drawImage video, 0, 0, canvas.width, canvas.height
+            ctx.drawImage video, -offset, 0, wide, canvas.height
             imageEle = document.createElement 'img'
             imageEle.src = canvas.toDataURL 'image/png'
             frames.push imageEle
