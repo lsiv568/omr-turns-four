@@ -12,6 +12,8 @@
       redirectTo: '/'
     });
     return $locationProvider.html5Mode(true);
+  }).run(function($rootScope) {
+    return $rootScope.MAX_NUM_GIFS = 50;
   });
 
 }).call(this);

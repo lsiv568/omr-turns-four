@@ -13,3 +13,6 @@ angular.module('videoCaptureApp', [])
         redirectTo: '/'
 
     $locationProvider.html5Mode true
+  .run ($rootScope) ->
+
+    $rootScope.MAX_NUM_GIFS = 50
