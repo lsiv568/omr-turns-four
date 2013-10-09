@@ -24,6 +24,11 @@ body, html, .container {
   100% {width: 0%; height: 0%; top: 50%}
 }
 
+@-webkit-keyframes fade-in {
+  0% {opacity: 0;}
+  100%   {opacity: 1;}
+}
+
 .stitching {
   -webkit-animation: rotation 3s infinite alternate;
   width: 200px;
@@ -64,6 +69,8 @@ body, html, .container {
     img {
       width: 100%;
       display: block;
+      -webkit-animation: fade-in 1s 1;
+      opacity: 1;
     }
 
   }
@@ -129,6 +136,8 @@ body, html, .container {
     img {
       width: 100%;
       display: block;
+      -webkit-animation: fade-in 1s 1;
+      opacity: 1;
     }
 
   }
