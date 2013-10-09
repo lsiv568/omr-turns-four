@@ -2,6 +2,10 @@
 
 angular.module('videoCaptureApp', [])
   .config ($routeProvider, $locationProvider) ->
+
+    gifResolve = (Aws) ->
+      Aws.getGifs()
+
     $routeProvider
       .when '/',
         templateUrl: 'views/main.html'
@@ -9,6 +13,8 @@ angular.module('videoCaptureApp', [])
       .when '/display',
         templateUrl: 'views/display.html'
         controller: 'DisplayCtrl'
+        resolve:
+          gifs: gifResolve
       .otherwise
         redirectTo: '/'
 

@@ -2,12 +2,19 @@
 (function() {
   'use strict';
   angular.module('videoCaptureApp', []).config(function($routeProvider, $locationProvider) {
+    var gifResolve;
+    gifResolve = function(Aws) {
+      return Aws.getGifs();
+    };
     $routeProvider.when('/', {
       templateUrl: 'views/main.html',
       controller: 'MainCtrl'
     }).when('/display', {
       templateUrl: 'views/display.html',
-      controller: 'DisplayCtrl'
+      controller: 'DisplayCtrl',
+      resolve: {
+        gifs: gifResolve
+      }
     }).otherwise({
       redirectTo: '/'
     });

@@ -1,9 +1,9 @@
 'use strict'
 
 angular.module('videoCaptureApp')
-  .controller 'DisplayCtrl', ($scope, $rootScope, Realtime) ->
+  .controller 'DisplayCtrl', ($scope, $rootScope, gifs, Realtime) ->
 
-    $scope.gifs = []
+    $scope.gifs = gifs
 
     Realtime.listenOnFor Realtime.GIFS_NAMESPACE, 'created', (data) ->
      $scope.$apply ->
