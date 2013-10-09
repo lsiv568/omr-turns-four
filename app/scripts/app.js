@@ -8,12 +8,15 @@
     };
     $routeProvider.when('/', {
       templateUrl: 'views/main.html',
-      controller: 'MainCtrl'
+      controller: 'MainCtrl',
+      resolve: {
+        gifs: ['Aws', gifResolve]
+      }
     }).when('/display', {
       templateUrl: 'views/display.html',
       controller: 'DisplayCtrl',
       resolve: {
-        gifs: gifResolve
+        gifs: ['Aws', gifResolve]
       }
     }).otherwise({
       redirectTo: '/'

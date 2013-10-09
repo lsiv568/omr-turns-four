@@ -2,10 +2,12 @@
   <div class="countdown-time-container">
     <p ng-bind="countdownTime"></p>
     <div ng-show="stitching">
-      <img class="stitching" ng-src="../images/loader.png" />
+      <img class="stitching" ng-src="../images/spinner.svg" />
     </div>
   </div>
   <video id="record-me"></video>
   <canvas id="output-canvas"></canvas>
-  <button id="create-gif" ng-click="startRecording($event)">Create Gif</button>
+  <div id="create-gif" ng-click="startRecording($event)">
+    <img ng-class="{hideCamera: recording}" ng-src="../images/omr-camerabutton-purple.svg" />
+  </div>
 </div>

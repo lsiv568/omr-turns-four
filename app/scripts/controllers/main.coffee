@@ -1,9 +1,9 @@
 'use strict'
 
 angular.module('videoCaptureApp')
-  .controller 'MainCtrl', ($scope, $rootScope, Aws, Realtime) ->
+  .controller 'MainCtrl', ($scope, $rootScope, gifs, Aws, Realtime) ->
 
-    $scope.animatedGifs = []
+    $scope.animatedGifs = gifs
 
     $scope.gifCreated = (base64Gif) ->
       Aws.addGif base64Gif

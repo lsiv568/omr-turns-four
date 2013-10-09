@@ -29,7 +29,7 @@ angular.module('videoCaptureApp')
       duration = attrs.duration || 5000
       gifWidth = attrs.gifWidth || 200
       gifHeight = attrs.gifHeight || 200
-      recording = false
+      scope.recording = false
       scope.gifs = scope.gifs || []
       scope.stitching = false
 
@@ -44,9 +44,9 @@ angular.module('videoCaptureApp')
         alert 'You are using a terrible browser.  Unable to use Gif Creator'
 
       scope.startRecording = (event) ->
-        if not recording
+        if not scope.recording
           event.preventDefault()
-          recording = true
+          scope.recording = true
           scope.countdownTime = 3
           intervalID = setInterval ->
             if scope.countdownTime is 1
@@ -101,5 +101,5 @@ angular.module('videoCaptureApp')
               # dislay a progress bar while video is being stitched together
             gif.render()
             window.URL.revokeObjectURL video.src # free up object url
-            recording = false
+            scope.recording = false
           , duration

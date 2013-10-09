@@ -10,11 +10,13 @@ angular.module('videoCaptureApp', [])
       .when '/',
         templateUrl: 'views/main.html'
         controller: 'MainCtrl'
+        resolve:
+          gifs: ['Aws', gifResolve]
       .when '/display',
         templateUrl: 'views/display.html'
         controller: 'DisplayCtrl'
         resolve:
-          gifs: gifResolve
+          gifs: ['Aws', gifResolve]
       .otherwise
         redirectTo: '/'
 
