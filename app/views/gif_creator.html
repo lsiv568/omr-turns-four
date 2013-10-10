@@ -1,4 +1,7 @@
 <div class="container">
+  <div ng-show="recording && countdownTime == null" class="recording-icon-container">
+    <img ng-src="../images/recording.png" />
+  </div>
   <div class="countdown-time-container">
     <p ng-bind="countdownTime"></p>
     <div ng-show="stitching">

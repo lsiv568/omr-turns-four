@@ -29,6 +29,12 @@ body, html, .container {
   100%   {opacity: 1;}
 }
 
+@-webkit-keyframes fade-out {
+  0% {opacity: 1;}
+  100%   {opacity: 0;}
+}
+
+
 .stitching {
   -webkit-animation: rotation 3s infinite alternate;
   width: 200px;
@@ -147,4 +153,13 @@ body, html, .container {
   position: absolute;
   background-size: 50% auto;
   opacity: .9;
+}
+
+.recording-icon-container {
+  position: absolute;
+  z-index: 999;
+  img {
+    -webkit-animation: fade-in .8s infinite;
+    -webkit-animation: fade-out .8s infinite;
+  }
 }
