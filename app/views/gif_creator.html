@@ -1,7 +1,4 @@
 <div class="container">
-  <div ng-show="recording && countdownTime == null" class="recording-icon-container">
-    <img ng-src="../images/recording.png" />
-  </div>
   <div class="countdown-time-container">
     <p ng-bind="countdownTime"></p>
     <div ng-show="stitching">
@@ -12,5 +9,9 @@
   <canvas id="output-canvas"></canvas>
   <div id="create-gif" ng-click="startRecording($event)">
     <img ng-class="{hideCamera: recording}" ng-src="../images/omr-camerabutton-purple.svg" />
+  </div>
+  <div ng-class="{recordingNow: recording && countdownTime == null}" class="recording-icon-container">
+    <img ng-src="../images/omr-record-bright.svg" />
+    <span ng-bind="timeRemaining"></span>
   </div>
 </div>

@@ -26,7 +26,7 @@ angular.module('videoCaptureApp')
 
       video = null
       frameRate = attrs.frameRate || 200
-      duration = attrs.duration || 5000
+      duration = attrs.duration * 1000 || 5000
       gifWidth = attrs.gifWidth || 200
       gifHeight = attrs.gifHeight || 200
       scope.recording = false
@@ -48,6 +48,7 @@ angular.module('videoCaptureApp')
           event.preventDefault()
           scope.recording = true
           scope.countdownTime = 3
+          # countdown until recording starts
           intervalID = setInterval ->
             if scope.countdownTime is 1
               clearInterval intervalID
@@ -71,15 +72,28 @@ angular.module('videoCaptureApp')
           wide = (aspectRatio) * canvas.height
           offset = canvas.width * (aspectRatio-1) / 2
           frames = []
-          intervalID = setInterval ->
+          # at the specified frame rate take a snapshot of the current video stream by throwing into the canvas
+          # take the canvas image and push it into the frames array
+          imageCaptureIntervalID = setInterval ->
             ctx.drawImage video, -offset, 0, wide, canvas.height
             imageEle = document.createElement 'img'
             imageEle.src = canvas.toDataURL 'image/png'
             frames.push imageEle
           , frameRate
 
+          # interval countdown for time remaining
+          scope.$apply ->
+            scope.timeRemaining = duration / 1000
+          timeRemainingIntervalID = setInterval ->
+            scope.$apply ->
+              scope.timeRemaining -= 1
+          , 1000
+
+          # Create a timer for the specified duration.  Once it expires, kill the image capture interval
+          # timer and stich together the images in the frames array via the GIF instance created above
           $timeout ->
-            clearInterval intervalID
+            clearInterval imageCaptureIntervalID
+            clearInterval timeRemainingIntervalID
             video.pause()
             angular.forEach frames, (frame) ->
               gif.addFrame frame, {delay: frameRate}
@@ -90,7 +104,7 @@ angular.module('videoCaptureApp')
                   scope.gifs.unshift url
                   scope.gifs = scope.gifs
                   # provide the url to the callback
-                  scope.callback {url: url} if scope.callback
+#                  scope.callback {url: url} if scope.callback
             gif.on 'progress', (progress) ->
               scope.$apply ->
                 if progress is 1
