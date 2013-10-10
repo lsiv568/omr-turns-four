@@ -104,7 +104,7 @@ angular.module('videoCaptureApp')
                   scope.gifs.unshift url
                   scope.gifs = scope.gifs
                   # provide the url to the callback
-#                  scope.callback {url: url} if scope.callback
+                  scope.callback {url: url} if scope.callback
             gif.on 'progress', (progress) ->
               scope.$apply ->
                 if progress is 1
